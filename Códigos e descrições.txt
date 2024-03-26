@@ -1,0 +1,55 @@
+Códigos e descrições
+
+--------------------------------------------------------------------
+# proc_ren.py
+--------------------------------------------------------------------
+Script destinado a fazer o sentenciamento, extração de token e classificação (REN). O código utiliza o tokenizador do spaCy e o classificador do Bert (pré-treinado).
+Este script é alimentado pelos documentos do banco de dados SQLite.
+O resultado é salvo na tabela CorpusPrata.
+
+Obs: Este código é utilizado para extrair as entidades do corpus e inserir os tokens diretamente em uma tabela. 
+Estamos utilizando a tabela CorpusDourado (CD) para receber esses dados após o processamento.
+A revisão do CD é feita manualmente ulteriormente.
+
+Deve ser configurado conforme os dados a seguir:
++ modelo = '{nome do modelo}' -> nome do modelo BERT pré-treinado de REN;
+paramCorpus = 'Corpus_caso1'    # tabela de dados do Corpus. Padrão: 'CorpusDourado'
+
+
+--------------------------------------------------------------------
+# proc_a2t.py
+--------------------------------------------------------------------
+Script para fazer a extração de relacionamento.
+Deve ser configurado conforme os dados a seguir:
++	xserieid = '11.' -> número de ref que será colocado na frente do id da tabela de extração de entidades;
++	n_th = 0.7 - > índice para positivação da relação
++	xproc = '11' -> número de ref do processamento
++	adiciona_placebo_flag = False -> indica se será adicionado corpus placebo ao processamento
++	mod_er = "roberta-large-mnli" -> indica qual biblioteca de ER será usada
++	paramlista_verbalizacao = '(1,2,3,4,5,6,7,8)' # todos -> indica quais relações será utilizada para o processamento
++	paramConjuntoMin = 1 -> indica o primeiro id de corpus da tabela
++	paramConjuntoMax = 50 -> indica o último id de corpus da tabela
++	paramExtracao = 'Extracao_caso1' -> tabela com dados da extração
+
+--------------------------------------------------------------------
+# proc_cd_extracao.py
+--------------------------------------------------------------------
+Script para transformar os dados do "CorpusDourado" em dados da tabela "ExtracaoCD".
+ExtracaoCD tem as sentenças e entidades prontas para ingestão no script de extração de relacionamento (proc_a2t_v2.py).
+Deve ser configurado conforme os dados a seguir:
++ modelo_ren = 'CD' -> ref para o modelo de ren
++ refer = 'CD' -> ref para o registro
++ vMin = 1  -> primeiro documento a ser processado
++ vMax = 50 -> último documento a ser processado
++ paramExtracao = 'Extracao_caso1' -> tabela de dados da Extração. Padrão: 'ExtracaoCD'
++ paramCorpus = 'Corpus_caso1'    -> tabela de dados do Corpus. Padrão: 'CorpusDourado'
+
+
+--------------------------------------------------------------------
+# confusion_matrix.py
+--------------------------------------------------------------------
+Script para calcular os valores da matrix de confusão: VP, FP, VN, FN; bem como os respectivos elementos de grupos: gVP, gFP, gVN, gFN
++ vproc = '21'  -> número do processamento
++ cod_relacao = '(1,2,3,4,5,6,7,8)'  -> código das relações processadas.
+Este script foi criado para calcular a matriz de confusão de processamentos com múltiplas relações.
+
