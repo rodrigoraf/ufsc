@@ -1,4 +1,4 @@
-CREATE TABLE "ValidCondition" (
+CREATE TABLE "TB_VALIDACAO" (
 	"id"	INTEGER,
 	"texto"	TEXT,
 	PRIMARY KEY("id")
