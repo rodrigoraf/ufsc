@@ -1,3 +1,3 @@
-CREATE INDEX "id_tb_relation" ON "Relation" (
+CREATE INDEX "id_tb_relation" ON "TB_RELACAO" (
 	"id"	ASC
 );
