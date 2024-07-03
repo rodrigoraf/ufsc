@@ -38,7 +38,7 @@ paramlista_verbalizacao= '(1,2,3,4,5,6,7,8)' # todos
 paramlista_len = len([c for c in paramlista_verbalizacao if c.isdigit()])
 paramConjuntoMin = 152
 paramConjuntoMax = 152
-paramExtracao = 'Extracao_caso2' # 'ExtracaoCD'
+paramExtracao = 'TB_SENTENCA'
 
 
 banco = sqlite3.connect('corpus.db')
@@ -50,7 +50,7 @@ def carrega_verbalizacoes(paramlista_verbalizacao):
     cod_relacao = paramlista_verbalizacao
     valid_conditions = {}
     relation_verbalizations = {}
-    sql = 'SELECT id, relation FROM Relation WHERE id in '+cod_relacao
+    sql = 'SELECT id, relation FROM TB_RELACAO WHERE id in '+cod_relacao
     cursor.execute(sql)
     resposta = cursor.fetchall()
 
@@ -60,7 +60,7 @@ def carrega_verbalizacoes(paramlista_verbalizacao):
         relations.append(relation)
 
         # verbalizacao
-        sql2 = 'SELECT verbalizacao FROM Verbalizacao WHERE id_relation = '+str(n)+' AND verbalizacao IS NOT NULL'
+        sql2 = 'SELECT verbalizacao FROM TB_VERBALIZACAO WHERE id_relation = '+str(n)+' AND verbalizacao IS NOT NULL'
         verba = cursor.execute(sql2)
         listaverbalizacao = []
         for v in verba:
@@ -68,7 +68,7 @@ def carrega_verbalizacoes(paramlista_verbalizacao):
         relation_verbalizations[relation] = listaverbalizacao
 
         #validRelations
-        sql3 = 'SELECT texto FROM ValidCondition WHERE id in (SELECT DISTINCT id_validCondition FROM Verbalizacao WHERE id_relation = '+str(n)+' ORDER BY id_validCondition ASC)'
+        sql3 = 'SELECT texto FROM TB_VALIDACAO WHERE id in (SELECT DISTINCT id_validCondition FROM TB_VERBALIZACAO WHERE id_relation = '+str(n)+' ORDER BY id_validCondition ASC)'
         cond = cursor.execute(sql3)
         listavalidRelations = []
         for c in cond:
@@ -192,11 +192,11 @@ def executa(corpus, clf):
         xid_extracao = str(xserieid)+str(xid)
         print('xid_extracao: ',xid_extracao)
         print('xid_corpus: ',xid_corpus)
-        sql4 = "SELECT id FROM Processados WHERE id_extracao ="+str(xid_extracao)
+        sql4 = "SELECT id FROM TB_RESULTADO WHERE id_extracao ="+str(xid_extracao)
         cursor.execute(sql4)
         r = cursor.fetchone()
         if r is None:
-            sql2= "INSERT INTO Processados (sentenca, entity1, entity2, entity_type1, entity_type2, referencia, id_corpus, id_extracao) VALUES ('"+str(xsentenca)+"', '"+str(xentity1)+"', '"+str(xentity2)+"', '"+str(xentity_type1)+"', '"+str(xentity_type2)+"', '"+str(xreferencia)+"', "+str(xid_corpus)+", "+str(xid_extracao)+")"
+            sql2= "INSERT INTO TB_RESULTADO (sentenca, entity1, entity2, entity_type1, entity_type2, referencia, id_corpus, id_extracao) VALUES ('"+str(xsentenca)+"', '"+str(xentity1)+"', '"+str(xentity2)+"', '"+str(xentity_type1)+"', '"+str(xentity_type2)+"', '"+str(xreferencia)+"', "+str(xid_corpus)+", "+str(xid_extracao)+")"
             #print(sql2)
             cursor.execute(sql2)
 
@@ -221,16 +221,12 @@ def executa(corpus, clf):
                 res_relation3_score = res_relation3[1]
                 print(' ',res_relation3_score, res_relation3_desc)
             
-
-            # sql = "UPDATE Extracao SET mod_er = '"+mod_er+"',relation = '"+res_relation+"',score = '"+res_score+"' WHERE id="+str(y)
-            # print(sql)
-
             if paramlista_len > 1:
                 # mínimo de 3 verbalizações
-                sql3 = "UPDATE Processados SET proc = '"+xproc+"', mod_er = '"+mod_er+"',relation1 = '"+res_relation1_desc+"',score1 = '"+str(res_relation1_score)+"',relation2 = '"+res_relation2_desc+"',score2 = '"+str(res_relation2_score)+"',relation3 = '"+res_relation3_desc+"',score3 = '"+str(res_relation3_score)+"' WHERE id_extracao="+str(xid_extracao)
+                sql3 = "UPDATE TB_RESULTADO SET proc = '"+xproc+"', mod_er = '"+mod_er+"',relation1 = '"+res_relation1_desc+"',score1 = '"+str(res_relation1_score)+"',relation2 = '"+res_relation2_desc+"',score2 = '"+str(res_relation2_score)+"',relation3 = '"+res_relation3_desc+"',score3 = '"+str(res_relation3_score)+"' WHERE id_extracao="+str(xid_extracao)
             else:
                 # mínimo de 2 verbalizações
-                sql3 = "UPDATE Processados SET proc = '"+xproc+"', mod_er = '"+mod_er+"',relation1 = '"+res_relation1_desc+"',score1 = '"+str(res_relation1_score)+"',relation2 = '"+res_relation2_desc+"',score2 = '"+str(res_relation2_score)+"' WHERE id_extracao="+str(xid_extracao)
+                sql3 = "UPDATE TB_RESULTADO SET proc = '"+xproc+"', mod_er = '"+mod_er+"',relation1 = '"+res_relation1_desc+"',score1 = '"+str(res_relation1_score)+"',relation2 = '"+res_relation2_desc+"',score2 = '"+str(res_relation2_score)+"' WHERE id_extracao="+str(xid_extracao)
 
             cursor.execute(sql3)
             banco.commit()
@@ -245,7 +241,7 @@ def executa(corpus, clf):
 
 
 def cria_conjunto_MinMax(idmin, idmax):
-    sql = 'SELECT id FROM Corpus WHERE id >= '+str(idmin)+' AND id <= '+str(idmax)
+    sql = 'SELECT id FROM TB_CORPUS WHERE id >= '+str(idmin)+' AND id <= '+str(idmax)
     cursor.execute(sql)
     docpre = cursor.fetchall()
     docs = []
@@ -256,7 +252,7 @@ def cria_conjunto_MinMax(idmin, idmax):
 
 def cria_conjunto_verbalizacao(paramlista):
     cod_relacao = paramlista
-    sql = 'SELECT DISTINCT id_corpus FROM verbalizacao WHERE id_relation in '+cod_relacao
+    sql = 'SELECT DISTINCT id_corpus FROM TB_VERBALIZACAO WHERE id_relation in '+cod_relacao
     cursor.execute(sql)
     docpre = cursor.fetchall()
     docs = []
