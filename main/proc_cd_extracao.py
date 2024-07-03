@@ -9,9 +9,9 @@ tempo_inicial = time.time()
 vMin = 1
 vMax = 150
 modelo_ren = 'Luciano/bertimbau-base-lener_br'
-refer = 'Estudo de caso 2'
-paramExtracao = 'Extracao_caso2' # 'ExtracaoCD'
-paramCorpus = 'Corpus_caso2'    # 'Corpus'
+refer = 'Estudo de caso'
+paramExtracao = 'TB_SENTENCA_CASO' # 'TB_SENTENCA'
+paramCorpus = 'TB_CORPUS_CASO'    # 'TB_CORPUS'
 
 def combine_entities_permutacao(sentences_with_entities):
     combined_entities = []
