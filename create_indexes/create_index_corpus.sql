@@ -1,3 +1,3 @@
-CREATE INDEX "id_tb_corpus" ON "Corpus" (
+CREATE INDEX "id_tb_corpus" ON "TB_CORPUS" (
 	"id"	ASC
 );
