@@ -28,8 +28,8 @@ print('-'*20)
 # Cálculo do gabarito positivo (relação verdadeira)
 sql2 = """
     SELECT DISTINCT id_corpus, id_relation
-    FROM verbalizacao
-    LEFT JOIN relation ON verbalizacao.id_relation = relation.id
+    FROM TB_VERBALIZACAO V
+    LEFT JOIN TB_RELACAO R ON V.id_relation = R.id
     WHERE id_corpus <= ?
     ORDER BY id_corpus
 """
@@ -53,10 +53,10 @@ SELECT
     FROM (
         SELECT
             id_corpus,
-            relation1, Relation.id as id_relation,
+            relation1, REL.id as id_relation,
             MAX(score1) AS max_score
-        FROM Processados
-        LEFT JOIN Relation ON Processados.relation1 = Relation.relation
+        FROM TB_RESULTADO RES
+        LEFT JOIN TB_RELACAO REL ON RES.relation1 = REL.relation
         WHERE proc = """+vproc+""" AND relation1 <> 'no_relation' AND id_corpus <= ?
         GROUP BY id_corpus
     ) AS max_scores
