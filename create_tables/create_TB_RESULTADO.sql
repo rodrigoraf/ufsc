@@ -1,4 +1,4 @@
-CREATE TABLE "Processados" (
+CREATE TABLE "TB_RESULTADO" (
 	"id"	INTEGER,
 	"sentenca"	TEXT,
 	"mod_ren"	TEXT,
