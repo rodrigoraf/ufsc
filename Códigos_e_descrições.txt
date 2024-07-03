@@ -5,15 +5,15 @@ Códigos e descrições
 --------------------------------------------------------------------
 Script destinado a fazer o sentenciamento, extração de token e classificação (REN). O código utiliza o tokenizador do spaCy e o classificador do Bert (pré-treinado).
 Este script é alimentado pelos documentos do banco de dados SQLite.
-O resultado é salvo na tabela CorpusPrata.
+O resultado é salvo na tabela TB_CP.
 
 Obs: Este código é utilizado para extrair as entidades do corpus e inserir os tokens diretamente em uma tabela. 
-Estamos utilizando a tabela CorpusDourado (CD) para receber esses dados após o processamento.
-A revisão do CD é feita manualmente ulteriormente.
+Estamos utilizando a tabela TB_CP para receber esses dados após o processamento.
+A revisão do CP é feita manualmente ulteriormente quando deve-se renomear o banco para TB_CD.
 
 Deve ser configurado conforme os dados a seguir:
 + modelo = '{nome do modelo}' -> nome do modelo BERT pré-treinado de REN;
-paramCorpus = 'Corpus_caso1'    # tabela de dados do Corpus. Padrão: 'CorpusDourado'
+paramCorpus = 'TB_CORPUS_CASO'    # tabela de dados do Corpus. Padrão: 'TB_CP'
 
 
 --------------------------------------------------------------------
@@ -29,20 +29,20 @@ Deve ser configurado conforme os dados a seguir:
 +	paramlista_verbalizacao = '(1,2,3,4,5,6,7,8)' # todos -> indica quais relações será utilizada para o processamento
 +	paramConjuntoMin = 1 -> indica o primeiro id de corpus da tabela
 +	paramConjuntoMax = 50 -> indica o último id de corpus da tabela
-+	paramExtracao = 'Extracao_caso1' -> tabela com dados da extração
++	paramExtracao = 'TB_SENTENCA' -> tabela com dados da extração
 
 --------------------------------------------------------------------
 # proc_cd_extracao.py
 --------------------------------------------------------------------
-Script para transformar os dados do "CorpusDourado" em dados da tabela "ExtracaoCD".
-ExtracaoCD tem as sentenças e entidades prontas para ingestão no script de extração de relacionamento (proc_a2t_v2.py).
+Script para transformar os dados do "CorpusDourado" em dados da tabela "TB_SENTENCA".
+TB_SENTENCA tem as sentenças e entidades prontas para ingestão no script de extração de relacionamento (proc_a2t_v2.py).
 Deve ser configurado conforme os dados a seguir:
 + modelo_ren = 'CD' -> ref para o modelo de ren
 + refer = 'CD' -> ref para o registro
 + vMin = 1  -> primeiro documento a ser processado
 + vMax = 50 -> último documento a ser processado
-+ paramExtracao = 'Extracao_caso1' -> tabela de dados da Extração. Padrão: 'ExtracaoCD'
-+ paramCorpus = 'Corpus_caso1'    -> tabela de dados do Corpus. Padrão: 'CorpusDourado'
++ paramExtracao = 'TB_SENTENCA_CASO' -> tabela de dados da Extração. Padrão: 'TB_SENTENCA'
++ paramCorpus = 'TB_CORPUS_CASO'    -> tabela de dados do Corpus. Padrão: 'TB_CP'
 
 
 --------------------------------------------------------------------
