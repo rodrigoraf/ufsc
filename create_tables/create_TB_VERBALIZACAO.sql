@@ -1,4 +1,4 @@
-CREATE TABLE Verbalizacao(
+CREATE TABLE TB_VERBALIZACAO(
   id,
   verbalizacao TEXT,
   id_corpus INT,
