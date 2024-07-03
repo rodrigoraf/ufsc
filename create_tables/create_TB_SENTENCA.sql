@@ -1,4 +1,4 @@
-CREATE TABLE "ExtracaoCD" (
+CREATE TABLE "TB_SENTENCA" (
 	"id"	INTEGER,
 	"sentenca"	TEXT NOT NULL,
 	"mod_ren"	TEXT,
