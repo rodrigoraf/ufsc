@@ -1,4 +1,4 @@
-CREATE TABLE "Corpus_casoX" (
+CREATE TABLE "TB_CORPUS_CASO" (
 	"id"	INTEGER NOT NULL,
 	"id_documento"	INTEGER NOT NULL,
 	"token"	TEXT NOT NULL,
