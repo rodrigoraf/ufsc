@@ -1,4 +1,4 @@
-# proc_ren2.py
+# proc_ren.py
 # Script para sentenciar, tokenizar e classificar documentos
 
 import sqlite3, spacy
@@ -16,13 +16,12 @@ modelo8 = 'neuralmind/bert-large-portuguese-cased'
 modelo = modelo1
 global paramCorpus
 # Atenção: Antes de alterar o paramCorpus, certifique que a tabela foi criada.
-paramCorpus = 'Corpus_caso1'    # tabela de dados do Corpus. Padrão: 'Corpus'
+paramCorpus = 'TB_CORPUS_CASO'    # tabela para salvar o resultado. Padrão: 'TB_CP'
 
 banco_origem = sqlite3.connect('corpus.db')
 cursor_origem = banco_origem.cursor()
 
-sql = "SELECT DOC.id, DOC.texto FROM Corpus DOC WHERE DOC.id = 151"
-#AND Doc.id <= 100"
+sql = "SELECT DOC.id, DOC.texto FROM TB_CORPUS DOC WHERE DOC.id = 151" # especificar os documentos para o REN (sempre TB_CORPUS)
 cursor_origem.execute(sql)
 result_origem = cursor_origem.fetchall()
 
@@ -153,8 +152,6 @@ for id, texto in result_origem:
 		for item in res:
 			token = item['word']
 			classif = item['entity']
-
-			#sql_insert = "INSERT INTO CorpusPrata (id_documento, token, classificacao, modelo) VALUES ("+str(int(id)+9000)+",'"+token+"','"+classif+"','"+modelo+"');"
 
 			sql_insert = "INSERT INTO "+paramCorpus+" (id_documento, token, classificacao) VALUES ("+str(id)+",'"+token+"','"+classif+"');"	
 
